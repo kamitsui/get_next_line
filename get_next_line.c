@@ -6,10 +6,11 @@
 /*   By: kamitsui <kamitsui@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 14:46:05 by kamitsui          #+#    #+#             */
-/*   Updated: 2023/04/05 18:32:49 by kamitsui         ###   ########.fr       */
+/*   Updated: 2023/04/05 22:27:58 by kamitsui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <limits.h>
 #include "get_next_line.h"
 
 size_t	ft_strnlen(const char *s, size_t maxlen)
@@ -101,7 +102,7 @@ char	*get_next_line(int fd)
 {
 	char		buffer[BUFFER_SIZE + 1];
 	ssize_t		bytes_read;
-	static char	*saved[256];
+	static char	*saved[OPEN_MAX];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);

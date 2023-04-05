@@ -6,7 +6,7 @@
 /*   By: kamitsui <kamitsui@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 15:03:47 by kamitsui          #+#    #+#             */
-/*   Updated: 2023/04/05 13:17:18 by kamitsui         ###   ########.fr       */
+/*   Updated: 2023/04/05 22:21:12 by kamitsui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 4096
-//#  define BUFFER_SIZE 42
 # endif
 
 char	*get_next_line(int fd);
@@ -29,3 +28,5 @@ char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif
+//norm error the below
+//# define MAX_FD sysconf(_SC_OPEN_MAX)
