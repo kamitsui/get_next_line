@@ -6,7 +6,7 @@
 /*   By: kamitsui <kamitsui@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 14:46:05 by kamitsui          #+#    #+#             */
-/*   Updated: 2023/04/05 14:11:13 by kamitsui         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:32:49 by kamitsui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ char	*ft_strndup(const char *s1, size_t n)
 	return (ft_memmove(result, s1, len));
 }
 
-char	*ft_newline(char **saved, int fd, int bytes_read)
+char	*ft_newline(char **saved, int fd)
 {
 	char	*temp;
 	char	*line;
 	int		len;
 
-	if ((saved[fd] == NULL) || (bytes_read == 0))
+	if (saved[fd] == NULL)
 		return (NULL);
 	temp = ft_strchr(saved[fd], '\n');
 	if (temp != NULL)
@@ -61,7 +61,10 @@ char	*ft_newline(char **saved, int fd, int bytes_read)
 	}
 	else
 	{
-		line = ft_strdup(saved[fd]);
+		if (!(*saved[fd] == '\0'))
+			line = ft_strdup(saved[fd]);
+		else
+			line = NULL;
 		free(saved[fd]);
 		saved[fd] = NULL;
 	}
@@ -80,7 +83,7 @@ ssize_t	search_newline(char **saved, char *buffer, ssize_t bytes_read, int fd)
 			saved[fd] = ft_strdup(buffer);
 		else
 		{
-			str_temp = ft_strjoin(*saved, buffer);
+			str_temp = ft_strjoin(saved[fd], buffer);
 			free(saved[fd]);
 			saved[fd] = str_temp;
 		}
@@ -89,8 +92,7 @@ ssize_t	search_newline(char **saved, char *buffer, ssize_t bytes_read, int fd)
 		bytes_temp = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_temp < 0)
 			return (bytes_temp);
-		else
-			bytes_read = bytes_temp;
+		bytes_read = bytes_temp;
 	}
 	return (bytes_read);
 }
@@ -111,5 +113,5 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (bytes_read == 0 && saved[fd] == NULL)
 		return (NULL);
-	return (ft_newline(saved, fd, bytes_read));
+	return (ft_newline(saved, fd));
 }

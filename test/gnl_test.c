@@ -6,21 +6,15 @@
 /*   By: kamitsui <kamitsui@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 10:32:03 by kamitsui          #+#    #+#             */
-/*   Updated: 2023/04/05 14:21:18 by kamitsui         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:29:37 by kamitsui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <fcntl.h>
-#include <libc.h>//for __attribute
 #include "get_next_line.h"
 #define ERRO_MESS	"Usage: ./program filename\n"
 #define ERRO_OPEN	"Error: Could not open file\n"
-
-__attribute__((destructor)) static void destructor()
-{
-	system("leaks -q a.out");
-}
 
 int	main(int ac, char **av)
 {
