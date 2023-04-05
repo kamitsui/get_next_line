@@ -6,7 +6,7 @@
 /*   By: kamitsui <kamitsui@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 10:32:03 by kamitsui          #+#    #+#             */
-/*   Updated: 2023/04/05 11:33:54 by kamitsui         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:21:18 by kamitsui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int ac, char **av)
 	int		fd;
 	char	*line;
 
-	printf("BUFFER_SIZE:%d\n\n", BUFFER_SIZE);
+	printf("BUFFER_SIZE:%d\n", BUFFER_SIZE);
 	if (ac != 2)
 	{
 		write(STDERR_FILENO, ERRO_MESS, 26);
@@ -48,7 +48,6 @@ int	main(int ac, char **av)
 			free(line);
 		}
 	}
-	printf("\n");
 	close(fd);
 	return (0);
 }
