@@ -6,12 +6,57 @@
 /*   By: kamitsui <kamitsui@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 14:46:05 by kamitsui          #+#    #+#             */
-/*   Updated: 2023/04/04 22:20:35 by kamitsui         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:42:04 by kamitsui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <string.h>//for check
+
+size_t	ft_strnlen(const char *s, size_t maxlen)
+{
+	size_t	len;
+
+	len = 0;
+	if (!maxlen)
+		return (len);
+	while (*s)
+	{
+		if (len == maxlen)
+			break ;
+		len++;
+		s++;
+	}
+	return (len);
+}
+
+char	*ft_strndup(const char *s1, size_t n)
+{
+	size_t	len;
+	char	*result;
+
+	len = ft_strnlen(s1, n);
+	result = malloc(sizeof(char) * (len + 1));
+	if (!result)
+		return (NULL);
+	result[len] = '\0';
+	return (ft_memmove(result, s1, len));
+}
+
+//char	*ft_substrline(char *str, char *str_nl)
+//{
+//	char	*line;
+//	size_t	len;
+//
+//	if (str == NULL)
+//		return (NULL);
+//	len = str_nl - str;
+//	line = ft_strndup(str, len);
+//	if (line == NULL)
+//		return (NULL);
+//	str_nl = ft_strdup(str_nl + 1);
+//	saved[fd] = ;
+//}
 
 char	*ft_newline(char **saved, int fd, int bytes_read)
 {
@@ -21,12 +66,11 @@ char	*ft_newline(char **saved, int fd, int bytes_read)
 
 	if ((saved[fd] == NULL) && (bytes_read == 0))
 		return (NULL);
-	temp = strchr(saved[fd], '\n');
+	temp = ft_strchr(saved[fd], '\n');
 	if (temp != NULL)
 	{
 		len = temp - saved[fd] + 1;
-		line = strndup(saved[fd], len);
-//		line = strndup(saved[fd], len);
+		line = ft_strndup(saved[fd], len);
 		temp = ft_strdup(temp + 1);
 		free(saved[fd]);
 		saved[fd] = temp;
@@ -34,42 +78,73 @@ char	*ft_newline(char **saved, int fd, int bytes_read)
 	else
 	{
 		line = ft_strdup(saved[fd]);
-//		free(saved[fd]);
+		free(saved[fd]);
 		saved[fd] = NULL;
 	}
 	return (line);
 }
 
-char	*get_next_line(int fd)
+ssize_t	seach_nl(char **saved, char *buffer, ssize_t bytes_read, int fd)
 {
-	static char	*saved[256];
-	char		buffer[BUFFER_SIZE + 1];
-	char		*tmp;
-	ssize_t		bytes_read;
+	char	*str_tmp;
+	ssize_t	bytes_tmp;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
 		if (saved[fd] == NULL)
-			saved[fd] = strdup(buffer);
-//			saved[fd] = ft_strdup(buffer);
+			saved[fd] = ft_strdup(buffer);
 		else
 		{
-			tmp = strdup(buffer);
-//			tmp = ft_strdup(buffer);
+			str_tmp = ft_strjoin(*saved, buffer);
 			free(saved[fd]);
-			saved[fd] = tmp;
+			saved[fd] = str_tmp;
 		}
-		if (strchr(buffer, '\n'))
-//		if (ft_strchr(buffer, '\n'))
+		if (ft_strchr(buffer, '\n'))
 			break ;
+		bytes_tmp = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_tmp < 0)
+			return (bytes_tmp);
+		else
+			bytes_read = bytes_tmp;
 	}
+	return (bytes_read);
+}
+
+char	*get_next_line(int fd)
+{
+	char		buffer[BUFFER_SIZE + 1];
+	ssize_t		bytes_read;
+	static char	*saved[256];
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	if (bytes_read < 0)
+		return (NULL);
+	bytes_read = seach_nl(saved, buffer, bytes_read, fd);
 	if (bytes_read == -1)
 		return (NULL);
 	if (bytes_read == 0 && saved[fd] == NULL)
 		return (NULL);
-	return (NULL);
-//	return (ft_new_line(saved, fd, bytes_read));
+	return (ft_newline(saved, fd, bytes_read));
 }
+//void code
+//	char		buffer[BUFFER_SIZE + 1];
+//	char		*tmp;
+//	bytes_read = read(fd, buffer, BUFFER_SIZE);
+//	while (bytes_read > 0)
+//	{
+//		buffer[bytes_read] = '\0';
+//		if (saved[fd] == NULL)
+//			saved[fd] = ft_strdup(buffer);
+//		else
+//		{
+//			tmp = ft_strdup(buffer);
+//			free(saved[fd]);
+//			saved[fd] = tmp;
+//		}
+//		if (ft_strchr(buffer, '\n'))
+//			break ;
+//		bytes_read = read(fd, buffer, BUFFER_SIZE);
+//	}
