@@ -1,0 +1,58 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile_bonus                                     :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: kamitsui <kamitsui@student.42tokyo.jp>     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/04/05 14:40:39 by kamitsui          #+#    #+#              #
+#    Updated: 2023/06/09 13:53:03 by kamitsui         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# Source files and Target
+SRCS = \
+	   get_next_line_bonus.c \
+	   get_next_line_utils_bonus.c \
+	   test/gnl_test_bonus.c
+NAME = a.out
+
+# Test case
+FILE_DIR = files
+FILE1 = 1000str_nonnl.txt
+FILE2 = 110str_5nl.txt
+FILE3 = 5-10-15-7-20-30-nl-nl.txt
+FILE4 = nl
+FILES = $(FILE_DIR)/$(FILE1) \
+		$(FILE_DIR)/$(FILE2) \
+		$(FILE_DIR)/$(FILE3) \
+		$(FILE_DIR)/$(FILE4)
+BUFFER_SIZE = 1
+# BUFFER_SIZE = 4096
+
+# Check OK case
+# FILE = 1000str_nonnl.txt
+# FILE = 110str_5nl.txt
+# FILE = 5-10-15-7-20-30-nl-nl.txt
+# FILE = nl
+# BUFFER_SIZE = 1
+
+# Compiler
+CC = clang
+CFLAGS = -Wall -Wextra -Werror -I. -D BUFFER_SIZE=$(BUFFER_SIZE) -g
+
+# Default target
+all:$(NAME)
+	./$(NAME) $(FILES)
+
+# Target
+$(NAME): $(SRCS)
+	$(CC) $(CFLAGS) $^ -o $@
+
+# Clean target
+clean:
+	$(RM) $(NAME)
+
+re: clean all
+
+.PHONY: all clean re
