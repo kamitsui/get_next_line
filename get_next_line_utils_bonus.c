@@ -6,11 +6,11 @@
 /*   By: kamitsui <kamitsui@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 15:31:14 by kamitsui          #+#    #+#             */
-/*   Updated: 2023/04/05 19:44:11 by kamitsui         ###   ########.fr       */
+/*   Updated: 2023/06/09 11:55:51 by kamitsui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
